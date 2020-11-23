@@ -3,7 +3,6 @@ class TeamsController < ApplicationController
   before_action :set_team, only: %i[show edit update destroy]
   before_action :exclude_without_owner, only: %i[edit]
 
-
   def index
     @teams = Team.all
   end
@@ -72,8 +71,6 @@ class TeamsController < ApplicationController
   end
 
   def exclude_without_owner
-    unless current_user.is_owner?(@team)
-      redirect_back(fallback_location: team_path(@working_team), notice: I18n.t('views.messages.no_authority_without_owner'))
-    end
+    redirect_back(fallback_location: team_path(@working_team), notice: I18n.t('views.messages.no_authority_without_owner')) unless current_user.is_owner?(@team)
   end
 end
