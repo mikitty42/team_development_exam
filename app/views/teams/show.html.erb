@@ -43,12 +43,16 @@
                     <tr>
                       <td><%= image_tag 'default.jpg', size: '40x40' %></td>
                       <td><%= assign.user.email %></td>
-                      <% if current_user.is_owner?(@team) || current_user.is_self?(assign) %>
-                        <td><%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %></td>
-                      <% end %>
-                      <% if current_user.is_owner?(@team) %>
-                        <td><%= link_to I18n.t('views.messages.move_authority'), change_owner_team_path(assign.user_id), method: :patch, class: 'btn btn-sm btn-danger' %></td>
-                      <% end %>
+                      <td>
+                      <% if current_user.id == @team.owner_id || current_user.id == assign.user_id %>
+                          <td><%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %></td>
+                        <% end %>
+                        </td>
+                        <td>
+                          <% if current_user.id == @team.owner_id && current_user.id != assign.user_id %>
+                            <td><%= link_to I18n.t('views.messages.move_authority'), change_owner_team_path(assign.user_id), method: :patch, class: 'btn btn-sm btn-danger' %></td>
+                          <% end %>
+                        </td>
                     </tr>
                   <% end %>
                 </tbody>
